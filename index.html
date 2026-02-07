@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Rose Day Surprise — For Nisuuu 🌹</title>
+
+<style>
+  :root{
+    --bg1:#2b0a16; --bg2:#6b1231; --bg3:#a01845;
+    --border: rgba(255,255,255,.18);
+    --text: rgba(255,255,255,.92);
+    --muted: rgba(255,255,255,.72);
+    --shadow: 0 26px 80px rgba(0,0,0,.35);
+    --pink:#ff4d8d; --gold:#ffd27a;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; overflow:hidden;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1100px 700px at 15% 20%, rgba(255,255,255,.12), transparent 60%),
+      radial-gradient(900px 650px at 80% 20%, rgba(255,77,141,.18), transparent 60%),
+      radial-gradient(900px 650px at 60% 90%, rgba(255,210,122,.10), transparent 60%),
+      linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+  }
+
+  /* confetti */
+  .spark{
+    position:fixed; top:-20px;
+    width:10px;height:14px; opacity:.9;
+    pointer-events:none;
+    animation: fall 2.4s linear forwards;
+    z-index:2;
+  }
+  @keyframes fall{ to{ transform: translateY(110vh) rotate(800deg); opacity:1; } }
+
+  .floatThing{
+    position:fixed; bottom:-40px;
+    font-size:18px; opacity:.82;
+    pointer-events:none;
+    animation: floatUp linear forwards;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,.25));
+    z-index:1;
+  }
+  @keyframes floatUp{
+    to{ transform: translateY(-120vh) translateX(var(--dx)); opacity:0; }
+  }
+
+  /* frame */
+  .frame{
+    width:min(1100px, 96vw);
+    border-radius:28px;
+    background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+    border:1px solid var(--border);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+    overflow:hidden;
+    position:relative;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1.25fr 1fr;
+    min-height:560px;
+  }
+  @media (max-width: 920px){ .grid{ grid-template-columns: 1fr; } }
+
+  .left{ padding:34px 30px; position:relative; }
+  .right{
+    padding:34px 30px;
+    border-left: 1px solid rgba(255,255,255,.12);
+    display:flex; align-items:center; justify-content:center;
+  }
+  @media (max-width: 920px){
+    .right{ border-left:none; border-top:1px solid rgba(255,255,255,.12); }
+  }
+
+  .pill{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:10px 14px;
+    border-radius:999px;
+    background: rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.14);
+    font-weight:900; font-size:14px;
+  }
+  .dot{
+    width:10px;height:10px;border-radius:999px;background:var(--gold);
+    box-shadow: 0 0 18px rgba(255,210,122,.55);
+  }
+
+  h1{
+    margin:18px 0 14px;
+    font-size: clamp(34px, 4.5vw, 62px);
+    line-height:1.02;
+  }
+  .desc{
+    margin:0 0 18px;
+    font-size:18px;
+    color:var(--muted);
+    max-width:56ch;
+  }
+
+  /* ✅ PHOTO CARD (NO CROP) */
+  .photoCard{
+    width:min(520px, 100%);
+    border-radius:22px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.08);
+    box-shadow: 0 20px 60px rgba(0,0,0,.28);
+  }
+  .photoStage{
+    position:relative;
+    width:100%;
+    height:280px;
+    background: rgba(0,0,0,.15);
+    overflow:hidden;
+  }
+
+  /* blurred background layer */
+  .photoStage .bg{
+    position:absolute; inset:-20px;
+    background-image: var(--img);
+    background-size: cover;
+    background-position: center;
+    filter: blur(18px) brightness(.85) saturate(1.1);
+    transform: scale(1.08);
+    opacity:.9;
+  }
+  .photoStage .bg::after{
+    content:"";
+    position:absolute; inset:0;
+    background: radial-gradient(400px 240px at 30% 20%, rgba(255,255,255,.12), transparent 60%),
+                linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.30));
+  }
+
+  /* main image (NO CUT) */
+  .photoStage img{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit: contain;   /* ✅ no cutting */
+    object-position: center;
+    padding:10px;          /* makes it look framed */
+    filter: saturate(1.05) contrast(1.02);
+  }
+
+  .photoCap{
+    padding:12px 14px;
+    font-weight:900; font-size:13px;
+    color:rgba(255,255,255,.88);
+    display:flex; justify-content:space-between; gap:10px;
+    background: rgba(0,0,0,.10);
+  }
+
+  /* input */
+  .row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:18px; }
+  .input{
+    flex:1 1 280px;
+    display:flex; align-items:center; gap:10px;
+    padding:14px 14px;
+    border-radius:14px;
+    background: rgba(0,0,0,.18);
+    border:1px solid rgba(255,255,255,.14);
+  }
+  input{
+    width:100%;
+    border:none; outline:none;
+    background:transparent;
+    color:rgba(255,255,255,.92);
+    font-size:16px;
+    font-weight:800;
+  }
+  .btn{
+    padding:14px 18px;
+    border:none;
+    border-radius:14px;
+    background: linear-gradient(180deg, #ff5aa2, #ff2f80);
+    color:white;
+    font-weight:1000;
+    cursor:pointer;
+    box-shadow: 0 16px 30px rgba(255,47,128,.22);
+    transition: transform .12s ease, filter .12s ease;
+  }
+  .btn:hover{ filter:brightness(1.05); transform: translateY(-1px); }
+  .hint{ margin-top:10px; font-size:12px; color:rgba(255,255,255,.65); font-weight:900; }
+
+  .footerNote{
+    position:absolute; right:22px; bottom:18px;
+    font-size:14px; color:rgba(255,255,255,.75); font-weight:900;
+  }
+
+  /* switching */
+  .screen2{ display:none; }
+  .show2 .screen1{ display:none; }
+  .show2 .screen2{ display:block; }
+
+  /* screen2 */
+  .topBar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 24px;
+    border-bottom:1px solid rgba(255,255,255,.12);
+    gap:12px;
+  }
+  .musicPill{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:10px 14px; border-radius:999px;
+    background: rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.14);
+    font-weight:1000; font-size:14px;
+  }
+  .musicDot{
+    width:9px;height:9px;border-radius:999px;background:#7CFF8A;
+    box-shadow: 0 0 18px rgba(124,255,138,.6);
+  }
+  .title2{
+    padding:24px 24px 0;
+    font-size: clamp(30px, 4vw, 54px);
+    font-weight:1100;
+  }
+  .contentGrid{
+    display:grid;
+    grid-template-columns: 1.3fr .9fr;
+    gap:20px;
+    padding:18px 24px 26px;
+  }
+  @media (max-width: 920px){ .contentGrid{ grid-template-columns: 1fr; } }
+
+  .panel{
+    border-radius:22px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.12);
+    overflow:hidden;
+    box-shadow: 0 18px 60px rgba(0,0,0,.22);
+  }
+  .panelHeader{
+    padding:16px 16px 12px;
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    background: rgba(255,255,255,.06);
+    border-bottom:1px solid rgba(255,255,255,.10);
+  }
+  .panelHeader h3{ margin:0; font-size:18px; font-weight:1100; }
+  .panelHeader p{ margin:4px 0 0; font-size:12px; color:rgba(255,255,255,.70); font-weight:900; }
+
+  .panelBody{
+    padding:16px;
+    min-height:240px;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .openBtn{
+    margin-top:14px;
+    padding:14px 18px;
+    border:none;
+    border-radius:18px;
+    background: rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.16);
+    color:rgba(255,255,255,.92);
+    font-weight:1100;
+    cursor:pointer;
+    transition: transform .12s ease, filter .12s ease;
+  }
+  .openBtn:hover{ filter:brightness(1.06); transform: translateY(-1px); }
+
+  .burstBtn{
+    margin-top:10px;
+    padding:12px 16px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.16);
+    background: rgba(0,0,0,.10);
+    color: rgba(255,255,255,.90);
+    font-weight:1100;
+    cursor:pointer;
+    transition: transform .12s ease, filter .12s ease;
+  }
+  .burstBtn:hover{ filter:brightness(1.06); transform: translateY(-1px); }
+
+  .smallNote{ font-size:12px; color:rgba(255,255,255,.62); font-weight:900; }
+
+  /* shake */
+  .shake{ animation: shake .32s ease; }
+  @keyframes shake{
+    0%,100%{ transform: translateX(0); }
+    25%{ transform: translateX(-8px); }
+    50%{ transform: translateX(8px); }
+    75%{ transform: translateX(-6px); }
+  }
+
+  /* music overlay (guaranteed fallback) */
+  .musicOverlay{
+    position:fixed; inset:0;
+    display:none;
+    align-items:center; justify-content:center;
+    padding:18px;
+    background: rgba(0,0,0,.55);
+    z-index:120;
+  }
+  .musicOverlay.show{ display:flex; }
+  .musicCard{
+    width:min(520px, 94vw);
+    background: rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:22px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 30px 90px rgba(0,0,0,.45);
+    padding:18px;
+    text-align:center;
+  }
+  .musicCard h2{ margin:8px 0 6px; font-size:22px; }
+  .musicCard p{ margin:0 0 12px; color:rgba(255,255,255,.78); font-weight:900; }
+  .bigPlay{
+    margin-top:8px;
+    width:100%;
+    padding:14px 16px;
+    border:none;
+    border-radius:16px;
+    background: linear-gradient(180deg, #7CFF8A, #23d76a);
+    color:#0d2816;
+    font-weight:1100;
+    cursor:pointer;
+  }
+
+  /* letter modal (kept simple here) */
+  .modal{
+    position:fixed; inset:0;
+    display:none;
+    align-items:center; justify-content:center;
+    padding:18px;
+    background: rgba(0,0,0,.55);
+    z-index:99;
+  }
+  .modal.show{ display:flex; }
+  .letter{
+    width:min(900px, 96vw);
+    max-height:min(86vh, 900px);
+    overflow:auto;
+    border-radius:22px;
+    background: linear-gradient(180deg, #fffdf7, #fff7fb);
+    color:#1b1b1b;
+    box-shadow: 0 30px 90px rgba(0,0,0,.55);
+    border:1px solid rgba(0,0,0,.08);
+  }
+  .letterTop{
+    position:sticky; top:0;
+    padding:14px 18px;
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    background: rgba(255,255,255,.92);
+    border-bottom:1px solid rgba(0,0,0,.08);
+    backdrop-filter: blur(8px);
+    z-index:2;
+  }
+  .tag{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 14px;
+    border-radius:999px;
+    background: #ffe4ef;
+    border:1px solid rgba(0,0,0,.05);
+    font-weight:1100;
+  }
+  .close{
+    border:none;
+    width:42px;height:42px;
+    border-radius:12px;
+    cursor:pointer;
+    background:#f2f2f2;
+    font-size:18px;
+    font-weight:1100;
+  }
+  .letterBody{
+    padding:26px 26px 30px;
+    font-family: Georgia, "Times New Roman", serif;
+    line-height:1.85;
+    font-size:18px;
+  }
+  .signature{
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:12px;
+  }
+  .sigName{
+    font-family: "Brush Script MT","Segoe Script",cursive;
+    font-size:34px;
+    color:#b0003b;
+  }
+  .seal{
+    width:86px;height:86px;border-radius:999px;
+    background: linear-gradient(180deg,#d0003a,#7b001f);
+    display:flex;align-items:center;justify-content:center;
+    color:rgba(255,255,255,.92);
+    font-size:26px;
+    box-shadow: inset 0 0 22px rgba(0,0,0,.35), 0 18px 50px rgba(0,0,0,.25);
+    transform: rotate(-6deg);
+  }
+</style>
+</head>
+
+<body>
+<audio id="music" src="stream.mp3" preload="auto" loop playsinline></audio>
+
+<script>
+  // ambient
+  function confetti(n=12){
+    for(let i=0;i<n;i++){
+      const d=document.createElement("div");
+      d.className="spark";
+      d.style.left=(Math.random()*100)+"vw";
+      d.style.background=`hsl(${Math.random()*360},90%,60%)`;
+      d.style.width=(6+Math.random()*10)+"px";
+      d.style.height=(8+Math.random()*16)+"px";
+      d.style.animationDuration=(1.7+Math.random()*1.7)+"s";
+      document.body.appendChild(d);
+      setTimeout(()=>d.remove(),3600);
+    }
+  }
+  function floatThing(){
+    const h=document.createElement("div");
+    h.className="floatThing";
+    h.textContent = Math.random()<.55 ? "🌹" : (Math.random()<.5 ? "💗" : "💘");
+    h.style.left=(Math.random()*100)+"vw";
+    h.style.setProperty("--dx",(Math.random()*160-80)+"px");
+    h.style.animationDuration=(3.6+Math.random()*4.2)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),9000);
+  }
+  setInterval(()=>confetti(8), 1300);
+  setInterval(()=>floatThing(), 420);
+</script>
+
+<div class="frame" id="app">
+
+  <!-- SCREEN 1 -->
+  <div class="screen1">
+    <div class="grid">
+      <div class="left">
+        <div class="pill"><span class="dot"></span> Rose Day Surprise — For <b>Nisuuu</b></div>
+        <h1>I love you, Nisuuu 🌹</h1>
+
+        <p class="desc">
+          Are you ready for the surprise? Enter the password and step into a little celebration made just for you, Nisuuu.
+        </p>
+
+        <div class="row" id="row">
+          <div class="input">
+            <span>🔒</span>
+            <input id="pw" placeholder="Enter password" autocomplete="off" />
+          </div>
+          <button class="btn" id="enterBtn">Enter ✨</button>
+        </div>
+
+        <div class="hint">
+          Tip: If the music doesn’t start, tap <b>Enter</b> once again. If still blocked, you’ll get a “Tap to Play Music” popup.
+        </div>
+
+        <div class="footerNote">
+          Password is: <b>I LOVE YOU</b> (caps don’t matter)
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="photoCard">
+          <div class="photoStage" style="--img:url('couple.jpg')">
+            <div class="bg"></div>
+            <img src="couple.jpg" alt="Us" />
+          </div>
+          <div class="photoCap">
+            <span>Rose Day Surprise 💗</span>
+            <span>For Nisuuu 🌹</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2 -->
+  <div class="screen2">
+    <div class="topBar">
+      <div class="pill"><span class="dot"></span> Happy Rose Day, <b>Nisuuu</b> 🌹</div>
+      <div class="musicPill"><span class="musicDot"></span> Music is playing</div>
+    </div>
+
+    <div class="title2">Tap below to open your love letter 💌</div>
+
+    <div class="contentGrid">
+      <div class="panel">
+        <div class="panelHeader">
+          <div>
+            <h3>This letter is hiding inside your bouquet</h3>
+            <p>Open it… slowly… like a real surprise 💗</p>
+          </div>
+          <div style="font-size:18px;">✨🌹💖</div>
+        </div>
+
+        <div class="panelBody" style="flex-direction:column; gap:12px;">
+          <div class="photoCard" style="width:100%; max-width:620px;">
+            <div class="photoStage" style="--img:url('rose-moment.png'); height:340px;">
+              <div class="bg"></div>
+              <img src="rose-moment.png" alt="Rose Moment" />
+            </div>
+            <div class="photoCap">
+              <span>For my Nisuuu 🌹</span>
+              <span>Open the letter 💌</span>
+            </div>
+          </div>
+
+          <button class="openBtn" id="openLetter">💌 Open Love Letter</button>
+          <button class="burstBtn" id="moreMagic">More celebration 🎉</button>
+          <button class="burstBtn" id="playBtn">Play Music 🎶</button>
+          <div class="smallNote">If music doesn’t play, tap “Play Music” once.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panelHeader">
+          <div>
+            <h3>Little promise</h3>
+            <p>One rose today… and many more forever.</p>
+          </div>
+          <div style="font-size:18px;">💍</div>
+        </div>
+        <div class="panelBody" style="text-align:left; color:rgba(255,255,255,.92);">
+          <div style="max-width:42ch; font-weight:900; line-height:1.6;">
+            Nisuuu, you are my favorite place.<br/>
+            LDR ho ya paas ho — I choose you, always.<br/><br/>
+            🌹 “A rose for my rose.”<br/>
+            Aur haan… ab tumhari <b>lifetime booking</b> ho chuki hai 😌💘
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Letter -->
+<div class="modal" id="modal">
+  <div class="letter">
+    <div class="letterTop">
+      <div class="tag">Happy Rose Day 💗</div>
+      <button class="close" id="close">✕</button>
+    </div>
+    <div class="letterBody">
+      <h2 style="margin:0 0 10px;">Happy Rose Day, my jaan 💗</h2>
+
+      <p>
+        A rose for my rose. I love you so much my jaaanuuuuu, my nisuuuuuuu.
+        Tum meri valentine hai — sirf hum de sakte hai rose. LDR hai to kya hua, tab bhi denge.
+      </p>
+      <p>
+        Ab valentine banaye hai to dena to parega na meri valentine ko roses.
+        Isiliye yeh khubsurat sa bouquet meri had se jyada khubsurat Nisuuu ke liye — meri jaan.
+      </p>
+      <p>
+        Sorry hum tumko real rose nahi de paye. Mauka aane do… uske baad sirf valentine week kya,
+        <b>har roz</b> hi rose dengeeeee meri rose ko.
+      </p>
+      <p>
+        Hum bohot pyaar karte hai tumko meri jaan aur humesha karengeeeee — humesha matlab hamesaaaaa.
+        Aur kabhi tumko chor ke bhi nahi jayengeeee… kabhi nahi.
+      </p>
+      <p>
+        Maaf kar dena meri saari galtiyon ke liye. Tumhare layak banayenge hum, meri jaan.
+      </p>
+      <p>
+        Humko pata hai tumko bouquet se jyada single rose bhi pasand hai.
+        Isiliye rose ke saath dher saara tumhara fav cheez layenge —
+        jaise pani puri, dark chocolate, ice cream, aur bhi bohot kuch.
+      </p>
+
+      <p><b>Chalo ab rose diyeee na — khush ho jao.</b> I love you meri jaaaaan. My Nisuuu.</p>
+
+      <div class="signature">
+        <div>
+          Yours always 💗<br/>
+          <div class="sigName">Pranay</div>
+        </div>
+        <div class="seal">💘</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Music unblock overlay -->
+<div class="musicOverlay" id="musicOverlay">
+  <div class="musicCard">
+    <div class="pill" style="justify-content:center;"><span class="dot"></span> One tap needed</div>
+    <h2>Tap to start the music 🎶</h2>
+    <p>Some browsers block autoplay. One tap will unlock it.</p>
+    <button class="bigPlay" id="bigPlay">Play Music Now 💗</button>
+  </div>
+</div>
+
+<script>
+  const app = document.getElementById("app");
+  const pw = document.getElementById("pw");
+  const enterBtn = document.getElementById("enterBtn");
+  const row = document.getElementById("row");
+
+  const modal = document.getElementById("modal");
+  const openLetter = document.getElementById("openLetter");
+  const closeBtn = document.getElementById("close");
+
+  const moreMagic = document.getElementById("moreMagic");
+  const playBtn = document.getElementById("playBtn");
+
+  const music = document.getElementById("music");
+  const musicOverlay = document.getElementById("musicOverlay");
+  const bigPlay = document.getElementById("bigPlay");
+
+  function normalize(s){ return (s||"").trim().toLowerCase().replace(/\s+/g," "); }
+
+  function confettiBurst(count=260){
+    for(let i=0;i<count;i++){
+      const d=document.createElement("div");
+      d.className="spark";
+      d.style.left=(Math.random()*100)+"vw";
+      d.style.background=`hsl(${Math.random()*360},90%,60%)`;
+      d.style.width=(6+Math.random()*10)+"px";
+      d.style.height=(8+Math.random()*16)+"px";
+      d.style.animationDuration=(1.6+Math.random()*1.9)+"s";
+      document.body.appendChild(d);
+      setTimeout(()=>d.remove(),3800);
+    }
+  }
+
+  async function tryPlayMusic(){
+    try{
+      music.muted = false;
+      music.volume = 1.0;
+      await music.play();
+      musicOverlay.classList.remove("show");
+      return true;
+    }catch(e){
+      musicOverlay.classList.add("show"); // ✅ guaranteed fallback
+      return false;
+    }
+  }
+
+  function success(){
+    document.body.classList.add("show2");
+    app.classList.add("show2");
+    confettiBurst(340);
+    // try again on screen switch
+    tryPlayMusic();
+  }
+
+  function fail(){
+    row.classList.remove("shake");
+    void row.offsetWidth;
+    row.classList.add("shake");
+  }
+
+  async function enter(){
+    // This click is the user gesture. Best chance to start music.
+    await tryPlayMusic();
+    const val = normalize(pw.value);
+    if(val === "i love you") success();
+    else fail();
+  }
+
+  enterBtn.addEventListener("click", enter);
+  pw.addEventListener("keydown", (e)=>{ if(e.key==="Enter") enter(); });
+
+  bigPlay.addEventListener("click", tryPlayMusic);
+  playBtn.addEventListener("click", tryPlayMusic);
+
+  openLetter.addEventListener("click", ()=> modal.classList.add("show"));
+  closeBtn.addEventListener("click", ()=> modal.classList.remove("show"));
+  modal.addEventListener("click", (e)=>{ if(e.target===modal) modal.classList.remove("show"); });
+
+  moreMagic.addEventListener("click", ()=> confettiBurst(520));
+</script>
+
+</body>
+</html>
